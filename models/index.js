@@ -1,5 +1,5 @@
 const { fetchAllTopics } = require('./topics.model');
-const endPointsModel = require('./endPoints.model');
+const { getEndPoints } = require('./endPoints.model');
 
 exports.fetchAllTopics = fetchAllTopics;
-exports.endPoints = endPointsModel;
+exports.getEndPoints = getEndPoints;

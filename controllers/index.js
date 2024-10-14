@@ -1,5 +1,5 @@
 const { getAllTopics } = require('./topics.controller');
-const endPoints = require("./endPoints.controller");
+const { getEndPoints } = require("./endPoints.controller");
 
 exports.getAllTopics = getAllTopics;
-exports.endPoints = endPoints;
+exports.getEndPoints = getEndPoints;
