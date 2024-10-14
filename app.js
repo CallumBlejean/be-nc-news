@@ -1,9 +1,15 @@
 const express = require("express");
 const app = express();
-const { getAllTopics } = require("./controllers/topics.controller");
+const { getAllTopics } = require("./controllers/index");
+
 
 app.get("/api/topics", getAllTopics);
 
+
+
+app.all('/api/*', (request, response) => {
+  response.status(404).send({ msg: "404: Not Found" });
+});
 
 app.use((error, request, response, next) => {
   if (error.status) {
@@ -13,10 +19,7 @@ app.use((error, request, response, next) => {
   }
 });
 
-app.all('/api/*', (request, response) => {
-    response.status(404).send({ msg: "404: Not Found" });
-  });
+
 
 module.exports = app;
 
-//edit for jay

@@ -9,4 +9,3 @@ exports.fetchAllTopics = () => {
     });
 };
 
-//edit for jay
