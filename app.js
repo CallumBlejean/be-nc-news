@@ -4,7 +4,6 @@ const { getAllTopics } = require("./controllers/topics.controller");
 
 app.get("/api/topics", getAllTopics);
 
-app.get("/api", getEndpoints)
 
 app.use((error, request, response, next) => {
   if (error.status) {
