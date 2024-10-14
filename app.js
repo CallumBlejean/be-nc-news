@@ -12,4 +12,8 @@ app.use((error, request, response, next) => {
   }
 });
 
+app.all('/api/*', (request, response) => {
+    response.status(404).send({ msg: "404: Not Found" });
+  });
+
 module.exports = app;
