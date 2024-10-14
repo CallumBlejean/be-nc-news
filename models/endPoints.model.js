@@ -1,12 +1,5 @@
-const fs = require("fs/promises")
+const endpoints = require("../endpoints.json");
 
 exports.fetchEndPoints = () => {
-    const filePath = `${__dirname}/../endpoints.json`
-    return fs.readFile(filePath, "utf8")
-    .then((endPoints) => {
-       return JSON.parse(endPoints)
-    })
-    .catch((error) => {
-        throw error;
-      });
-}
+  return Promise.resolve(endpoints);
+};
