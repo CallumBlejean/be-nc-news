@@ -1,4 +1,4 @@
-const { fetchAllTopics } = require("../models/topics.model");
+const { fetchAllTopics } = require("../models/index");
 
 exports.getAllTopics = (request, response, next) => {
   fetchAllTopics()
@@ -10,4 +10,3 @@ exports.getAllTopics = (request, response, next) => {
     });
 };
 
-//edit for jay
