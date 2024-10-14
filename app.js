@@ -4,6 +4,8 @@ const { getAllTopics } = require("./controllers/topics.controller");
 
 app.get("/api/topics", getAllTopics);
 
+app.get("/api", getEndpoints)
+
 app.use((error, request, response, next) => {
   if (error.status) {
     response.status(error.status).send({ msg: error.msg});
@@ -17,3 +19,5 @@ app.all('/api/*', (request, response) => {
   });
 
 module.exports = app;
+
+//edit for jay
