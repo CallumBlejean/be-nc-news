@@ -1,5 +1,9 @@
 const { fetchAllTopics } = require('./topics.model');
-const { getEndPoints } = require('./endPoints.model');
+const { fetchEndPoints } = require('./endPoints.model');
+const { fetchArticle } = require("./articles.model")
 
-exports.fetchAllTopics = fetchAllTopics;
-exports.getEndPoints = getEndPoints;
+module.exports = { 
+    fetchArticle,
+    fetchAllTopics,
+    fetchEndPoints
+}
