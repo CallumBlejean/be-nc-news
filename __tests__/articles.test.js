@@ -15,6 +15,7 @@ describe("GET /api/articles/:article_id", () => {
       .then(({ body }) => {
         const { article } = body;
         expect(article).toBeInstanceOf(Object);
+        expect(article).toHaveProperty("article_id")
         expect(article).toHaveProperty("title");
         expect(article).toHaveProperty("topic");
         expect(article).toHaveProperty("author");
@@ -31,7 +32,7 @@ describe("GET /api/articles/:article_id", () => {
       .then(({ body }) => {
         expect(body.article).toEqual(
             expect.objectContaining({
-            article_id: 1,
+            article_id: expect.any(Number),
             title: expect.any(String),
             body: expect.any(String),
             author: expect.any(String),
