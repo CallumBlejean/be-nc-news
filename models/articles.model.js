@@ -38,3 +38,13 @@ exports.fetchArticle = (article_id) => {
       return result.rows[0];
     });
 };
+
+
+exports.fetchArticleComments = (article_id) => {
+  return db.query(`
+    
+    `)
+    .then((result) => {
+      
+    })
+}
