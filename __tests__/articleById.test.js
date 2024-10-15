@@ -8,7 +8,7 @@ beforeEach(() => seed(data));
 afterAll(() => db.end());
 
 describe("GET /api/articles/:article_id", () => {
-  it("will return 200 and with an article object with the correct properties.", () => {
+  it("returns 200 and with an article object with the correct properties.", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
@@ -25,7 +25,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toHaveProperty("article_img_url");
       });
   });
-  it("will return and object where the values are the correct data type", () => {
+  it("returns and object where the values are the correct data type", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
@@ -43,7 +43,7 @@ describe("GET /api/articles/:article_id", () => {
       })
      
   });
-  it("will return 404 if the article doesnt exist", () => {
+  it("returns 404 if the article doesnt exist", () => {
     return request(app)
       .get("/api/articles/99999")
       .expect(404)
@@ -51,7 +51,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(body.msg).toBe("404: Article Not Found");
       });
   });
-  it("will return 400 if the ID is not a number", () => {
+  it("returns 400 if the ID is not a number", () => {
     return request(app)
       .get("/api/articles/not-a-number")
       .expect(400)

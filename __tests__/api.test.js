@@ -9,7 +9,7 @@ beforeEach(() => seed(data));
 afterAll(() => db.end());
 
 describe("GET /api", () => {
-  it("will return 200 and the JSON of all available endpoints", () => {
+  it("returns 200 and the JSON of all available endpoints", () => {
     return request(app)
       .get("/api")
       .expect(200)

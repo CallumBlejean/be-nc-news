@@ -1,4 +1,4 @@
-const { fetchArticle } = require("../models/articles.model")
+const { fetchArticle } = require("../models/articleById.model")
 
 exports.getArticle = (request, response, next) => {
     const { article_id } = request.params
