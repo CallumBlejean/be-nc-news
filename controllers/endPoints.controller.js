@@ -1,4 +1,4 @@
-const { fetchEndPoints } = require('../models/index');
+const { fetchEndPoints } = require('../models/endPoints.model');
 
 exports.getEndPoints = (request, response, next) => {
     fetchEndPoints()
