@@ -8,11 +8,8 @@ beforeEach(() => seed(data));
 afterAll(() => db.end());
 
 describe("GET /api/topics", () => {
-  it("will return StatusCode(200)", () => {
-    return request(app).get("/api/topics").expect(200);
-  });
   describe("GET /api/topics", () => {
-    test("will return an array of topic objects, each with 'slug' and 'description' properties", () => {
+    test("returns 200 and an array of topic objects, each with 'slug' and 'description' properties", () => {
       return request(app)
         .get("/api/topics")
         .expect(200)
@@ -24,7 +21,7 @@ describe("GET /api/topics", () => {
           });
         });
     });
-   it("will return a 404 when given an incorrect path", () => {
+   it("returns a 404 when given an incorrect path", () => {
         return request(app)
           .get("/api/not-a-topic")
           .expect(404)
