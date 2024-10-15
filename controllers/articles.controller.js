@@ -7,10 +7,6 @@ exports.getArticle = (request, response, next) => {
     }
     fetchArticle(article_id)
     .then((article) => {
-        if(!article){
-            return response.status(404).send({ msg: `404: Article Not Found`})
-        }
-
         response.status(200).send({ article })
     })
     .catch((error) => {
