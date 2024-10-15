@@ -1,4 +1,4 @@
-const { fetchArticle, fetchAllArticles } = require("../models/articles")
+const { fetchArticle, fetchAllArticles } = require("../models/articles.model")
 
 
 exports.getArticle = (request, response, next) => {
