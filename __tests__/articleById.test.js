@@ -23,6 +23,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toHaveProperty("created_at");
         expect(article).toHaveProperty("votes");
         expect(article).toHaveProperty("article_img_url");
+        expect(article.article_id).toEqual(1)
       });
   });
   it("returns and object where the values are the correct data type", () => {

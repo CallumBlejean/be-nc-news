@@ -15,6 +15,7 @@ describe("GET /api/articles", () => {
       .then(({ body }) => {
         const { articles } = body;
         expect(articles).toBeInstanceOf(Array);
+        expect(articles.length).toBe(13)
         articles.forEach((article) => {
           expect(article).toEqual({
             author: expect.any(String),

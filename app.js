@@ -10,6 +10,7 @@ app.get("/api", getEndPoints);
 app.get("/api/topics", getAllTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticle);
+app.get("/api/articles/:article_id/comments", getArticleComments)
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
