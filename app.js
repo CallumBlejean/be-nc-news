@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 const { getAllTopics } = require("./controllers/topics.controller");
 const { getEndPoints } = require("./controllers/endPoints.controller")
-const { getArticle } = require("./controllers/articleById.controller")
-const { getAllArticles } = require("./controllers/allArticles.controller")
+const { getArticle, getAllArticles } = require("./controllers/articles")
+
 
 
 app.get("/api", getEndPoints);
