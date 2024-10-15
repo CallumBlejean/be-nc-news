@@ -26,8 +26,8 @@ exports.getAllArticles = (request, response, next) => {
 exports.getArticleComments = (request, response, next) => {
     const { article_id } = request.params
     fetchArticleComments(article_id)
-    .then((article) => {
-        response.status(200).send({ article })
+    .then((comments) => {
+        response.status(200).send({ comments })
     })
     .catch((error) => {
         next(error);
