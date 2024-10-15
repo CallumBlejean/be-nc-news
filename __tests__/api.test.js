@@ -44,7 +44,6 @@ describe("GET /api/topics", () => {
 });
 })
 
-
 describe("GET /api/articles", () => {
   it("returns 200 and an array of articles with correct properties and to ensure it excludes the body property", () => {
     return request(app)
