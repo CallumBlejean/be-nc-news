@@ -1,9 +1,6 @@
 const db = require("../db/connection");
 
 exports.updateArticleVotes = (article_id, inc_votes) => {
-  if (inc_votes === undefined || typeof inc_votes !== 'number') {
-    return Promise.reject({ status: 400, msg: "400: Bad Request" });
-  }
   return db
     .query(
       `
@@ -23,14 +20,7 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
 };
 
 exports.insertComment = (article_id, username, body) => {
-  if (!username || !body) {
-    return Promise.reject({
-      status: 400,
-      msg: "400: Bad Request - Missing required fields",
-    });
-  }
-
-  return db
+    return db
     .query(
       `
     INSERT INTO comments (article_id, author, body, votes, created_at)

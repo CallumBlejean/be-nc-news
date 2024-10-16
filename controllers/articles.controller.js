@@ -14,8 +14,9 @@ exports.patchArticleVotes = (request, response, next) => {
     .then((article) => {
       response.status(200).send({ article });
     })
-    .catch(next);
-};
+    .catch(next)
+    }
+
 
 
 exports.postArticleComment = (request, response, next) => {
