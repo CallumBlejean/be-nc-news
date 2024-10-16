@@ -7,6 +7,7 @@ const {
   getAllArticles,
   getArticleComments,
   postArticleComment,
+  patchArticleVotes
 } = require("./controllers/articles.controller");
 
 app.use(express.json());
@@ -17,6 +18,7 @@ app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticle);
 app.get("/api/articles/:article_id/comments", getArticleComments);
 app.post("/api/articles/:article_id/comments", postArticleComment);
+app.patch("/api/articles/:article_id", patchArticleVotes);
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });

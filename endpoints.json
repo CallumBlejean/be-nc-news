@@ -65,6 +65,43 @@
         }
       ]
     }
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "adds a comment to the specified article and returns the newly created comment",
+    "requestBody": {
+      "username": "butter_bridge",
+      "body": "This is a test comment."
+    },
+    "exampleResponse": {
+      "comment": {
+        "comment_id": 14,
+        "article_id": 1,
+        "author": "butter_bridge",
+        "body": "This is a test comment.",
+        "votes": 0,
+        "created_at": "2018-05-30T15:59:13.341Z"
+      }
+    }
+  },
+  
+    "PATCH /api/articles/:article_id": {
+      "description": "updates the votes of an article by article_id and returns that article",
+      "requestBody": {
+        "inc_votes": 1
+      },
+      "exampleResponse": {
+        "article": {
+          "article_id": 1,
+          "title": "Seafood substitutions are increasing",
+          "topic": "cooking",
+          "author": "butter_bridge",
+          "body": "Text from the article..",
+          "created_at": "2018-05-30T15:59:13.341Z",
+          "votes": 101,
+          "article_img_url": "http://website.com/image.jpg"
+        }
+      }
+    }
   }
-}
+
 
