@@ -10,6 +10,7 @@ const {
   patchArticleVotes
 } = require("./controllers/articles.controller");
 const { deleteComment } = require("./controllers/comments.controller")
+const { getAllUsers } = require("./controllers/users.controller")
 
 app.use(express.json());
 
@@ -21,6 +22,7 @@ app.get("/api/articles/:article_id/comments", getArticleComments);
 app.post("/api/articles/:article_id/comments", postArticleComment);
 app.patch("/api/articles/:article_id", patchArticleVotes);
 app.delete("/api/comments/:comment_id", deleteComment)
+app.get("/api/users", getAllUsers)
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
