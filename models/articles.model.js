@@ -5,35 +5,15 @@ exports.insertComment = (article_id, username, body) => {
     return Promise.reject({ status: 400, msg: "400: Bad Request - Missing required fields" });
   }
 
-  return db
-    .query(
-      `SELECT 1 FROM articles WHERE article_id = $1`,
-      [article_id]
-    )
-    .then((result) => {
-      if (result.rowCount === 0) {
-        return Promise.reject({ status: 404, msg: "404: Article Not Found" });
-      }
-      return db.query(
-        `SELECT 1 FROM users WHERE username = $1`,
-        [username]
-      );
-    })
-    .then((userResult) => {
-      if (userResult.rowCount === 0) {
-        return Promise.reject({ status: 404, msg: "404: User Not Found" });
-      }
-      
-      return db.query(
-        `
-        INSERT INTO comments (article_id, author, body, votes, created_at)
-        VALUES ($1, $2, $3, 0, NOW())
-        RETURNING *;
-        `,
-        [article_id, username, body]
-      );
-    })
-    .then((result) => result.rows[0]);
+  return db.query(
+    `
+    INSERT INTO comments (article_id, author, body, votes, created_at)
+    VALUES ($1, $2, $3, 0, NOW())
+    RETURNING *;
+    `,
+    [article_id, username, body]
+  )
+  .then((result) => result.rows[0]);
 };
   
 

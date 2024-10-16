@@ -213,7 +213,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("404: Article Not Found");
+        expect(body.msg).toBe("404: Article or User Not Found");
       });
   });
   it("returns 400 when article_id is not a number", () => {
@@ -239,7 +239,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("404: User Not Found");
+        expect(body.msg).toBe("404: Article or User Not Found");
       });
   });
 });
