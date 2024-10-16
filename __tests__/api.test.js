@@ -200,7 +200,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       .send(newComment)
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("400: Bad Request - Missing required fields");
+        expect(body.msg).toBe("400: Bad Request");
       });
   });
   it("returns 400 when article_id is not a number", () => {
@@ -316,4 +316,36 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("404: Article Not Found");
       });
   });
+});
+describe("DELETE /api/comments/:comment_id", () => {
+  it("removes a comment by comment id", () => {
+    return request(app)
+      .delete("/api/comments/1")
+      .expect(204)
+      .then(() => {
+        return db.query(`
+        SELECT * FROM comments
+        WHERE comment_id = 1
+        `);
+      })
+      .then((result) => {
+        expect(result.rows.length).toBe(0);
+      });
+  });
+  it("returns 404 when the comment_id does not exist", () => {
+    return request(app)
+    .delete("/api/comment/99999")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("404: Not Found")
+    })
+  })
+  it("returns 400 when the comment_id is not a number", () => {
+    return request(app)
+    .delete("/api/comments/not-a-number")
+    .expect(400)
+    .then(({ body }) => {
+      expect(body.msg).toBe("400: Bad Request")
+    })
+  })
 });
