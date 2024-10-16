@@ -20,27 +20,25 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/topics", () => {
-  describe("GET /api/topics", () => {
-    test("returns 200 and an array of topic objects, each with 'slug' and 'description' properties", () => {
-      return request(app)
-        .get("/api/topics")
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.topics).toBeInstanceOf(Array);
-          body.topics.forEach((topic) => {
-            expect(topic).toHaveProperty("slug");
-            expect(topic).toHaveProperty("description");
-          });
+  test("returns 200 and an array of topic objects, each with 'slug' and 'description' properties", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.topics).toBeInstanceOf(Array);
+        body.topics.forEach((topic) => {
+          expect(topic).toHaveProperty("slug");
+          expect(topic).toHaveProperty("description");
         });
-    });
-    it("returns a 404 when given an incorrect path", () => {
-      return request(app)
-        .get("/api/not-a-topic")
-        .expect(404)
-        .then(({ body }) => {
-          expect(body.msg).toBe("404: Not Found");
-        });
-    });
+      });
+  });
+  it("returns a 404 when given an incorrect path", () => {
+    return request(app)
+      .get("/api/not-a-topic")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
   });
 });
 
@@ -334,18 +332,34 @@ describe("DELETE /api/comments/:comment_id", () => {
   });
   it("returns 404 when the comment_id does not exist", () => {
     return request(app)
-    .delete("/api/comment/99999")
-    .expect(404)
-    .then(({ body }) => {
-      expect(body.msg).toBe("404: Not Found")
-    })
-  })
+      .delete("/api/comment/99999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
+  });
   it("returns 400 when the comment_id is not a number", () => {
     return request(app)
-    .delete("/api/comments/not-a-number")
-    .expect(400)
-    .then(({ body }) => {
-      expect(body.msg).toBe("400: Bad Request")
-    })
-  })
+      .delete("/api/comments/not-a-number")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+});
+describe("GET /api/users", () => {
+  it("returns 200 and an array of objects with username, name and avatar_url properties", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toBeInstanceOf(Array);
+        body.forEach((user) => {
+          expect(user).toHaveProperty("username", expect.any(String));
+          expect(user).toHaveProperty("name", expect.any(String));
+          expect(user).toHaveProperty("avatar_url", expect.any(String));
+        });
+      });
+  });
+  
 });

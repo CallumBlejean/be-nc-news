@@ -102,9 +102,21 @@
       }
     }
   },
-
   "DELETE /api/comments/:comment_id": {
     "description": "deletes a comment by comment_id",
     "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": {
+      "users": [
+        {
+          "username": "butter_bridge",
+          "name": "Jonny",
+          "avatar_url": "http://website.com/image.jpg"
+        }
+      ]
+    }
   }
 }
