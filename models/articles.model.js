@@ -20,7 +20,7 @@ exports.updateArticleVotes = (article_id, inc_votes) => {
 };
 
 exports.insertComment = (article_id, username, body) => {
-    return db
+  return db
     .query(
       `
     INSERT INTO comments (article_id, author, body, votes, created_at)
@@ -32,18 +32,25 @@ exports.insertComment = (article_id, username, body) => {
     .then((result) => result.rows[0]);
 };
 
-exports.fetchAllArticles = (sort_by = "created_at", order = "desc") => {
-  const validSortBys = ["title", "topic", "topic", "author", "created_at", "votes",]
-  const validOrder = ["asc", "desc"]
-  
+exports.fetchAllArticles = (sort_by = "created_at", order = "desc", topic) => {
+  const validSortBys = [
+    "title",
+    "topic",
+    "topic",
+    "author",
+    "created_at",
+    "votes",
+  ];
+  const validOrder = ["asc", "desc"];
+  const queryTopic = [];
+
   if (!validSortBys.includes(sort_by)) {
-    return Promise.reject(({ status: 400,  msg: "400: Invalid sort_by Query"}))
+    return Promise.reject({ status: 400, msg: "400: Invalid sort_by Query" });
   }
   if (!validOrder.includes(order)) {
     return Promise.reject({ status: 400, msg: "400: Invalid order Query" });
-  } 
-    return db.query(
-      `
+  }
+  let queryStr = `
         SELECT 
           articles.author,
           articles.title,
@@ -55,13 +62,26 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "desc") => {
           COUNT(comments.comment_id)::INT AS comment_count
         FROM articles
         LEFT JOIN comments ON articles.article_id = comments.article_id
+        
+      `;
+
+  if (topic) {
+    queryStr += `WHERE articles.topic = $1`;
+    queryTopic.push(topic);
+  }
+  queryStr += `
         GROUP BY articles.article_id
         ORDER BY ${sort_by} ${order};
-      `
-    )
-    .then((result) => {
-      return result.rows;
-    });
+  `;
+  return db.query(queryStr, queryTopic).then((result) => {
+    if (result.rows.length === 0) {
+      return Promise.reject({
+        status: 404,
+        msg: "404: No Articles Found for Specified Topic",
+      });
+    }
+    return result.rows;
+  });
 };
 
 exports.fetchArticle = (article_id) => {
