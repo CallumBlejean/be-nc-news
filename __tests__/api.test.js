@@ -415,10 +415,10 @@ describe("DELETE /api/comments/:comment_id", () => {
   });
   it("returns 404 when the comment_id does not exist", () => {
     return request(app)
-      .delete("/api/comment/99999")
+      .delete("/api/comments/99999")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("404: Not Found");
+        expect(body.msg).toBe("404: Comment Not Found");
       });
   });
   it("returns 400 when the comment_id is not a number", () => {
