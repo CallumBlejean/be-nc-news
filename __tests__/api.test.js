@@ -137,7 +137,6 @@ describe("GET /api/articles", () => {
       .then(({ body }) => {
         const { articles } = body;
         articles.forEach((article) => {
-          console.log(article.topic)
           expect(article.topic).toBe("mitch")
         })
           const sortedArticles = [...articles].sort((a, b) => a.votes - b.votes);
