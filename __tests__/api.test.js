@@ -101,8 +101,8 @@ describe("GET /api/articles", () => {
         expect(articles).toEqual(dateSortedArticles);
       });
   });
-  describe("ADDITIONAL TEST - GET /api/articles(sorting queries)", () => {
-    it("sorts articles by votes in ascending order", () => {
+  describe("ADDITIONAL TESTS - GET /api/articles(sorting queries)", () => {
+    it("returns 200 and sorts articles by votes in ascending order", () => {
       return request(app)
         .get("/api/articles?sort_by=votes&order=asc")
         .expect(200)
@@ -130,6 +130,29 @@ describe("GET /api/articles", () => {
           expect(body.msg).toBe("400: Invalid order Query");
         });
     });
+    it("returns 200 and sorts articles by votes in ascending order with a valid topic", () => {
+      return request(app)
+      .get("/api/articles?sort_by=votes&order=asc&topic=mitch")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        articles.forEach((article) => {
+          console.log(article.topic)
+          expect(article.topic).toBe("mitch")
+        })
+          const sortedArticles = [...articles].sort((a, b) => a.votes - b.votes);
+          expect(articles).toEqual(sortedArticles)
+          
+      })
+    })
+    it("returns 404 for an return of 0 results for that topic", () => {
+      return request(app)
+      .get("/api/articles?sort_by=votes&order=asc&topic=callum")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: No Articles Found for Specified Topic")
+      })
+    })
   });
 });
 
