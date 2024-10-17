@@ -40,6 +40,7 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "desc", topic) => {
     "author",
     "created_at",
     "votes",
+    "comment_count"
   ];
   const validOrder = ["asc", "desc"];
   const queryTopic = [];
