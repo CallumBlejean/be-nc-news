@@ -32,24 +32,32 @@ exports.insertComment = (article_id, username, body) => {
     .then((result) => result.rows[0]);
 };
 
-exports.fetchAllArticles = () => {
-  return db
-    .query(
+exports.fetchAllArticles = (sort_by = "created_at", order = "desc") => {
+  const validSortBys = ["title", "topic", "topic", "author", "created_at", "votes",]
+  const validOrder = ["asc", "desc"]
+  
+  if (!validSortBys.includes(sort_by)) {
+    return Promise.reject(({ status: 400,  msg: "400: Invalid sort_by Query"}))
+  }
+  if (!validOrder.includes(order)) {
+    return Promise.reject({ status: 400, msg: "400: Invalid order Query" });
+  } 
+    return db.query(
       `
         SELECT 
-        articles.author,
-        articles.title,
-        articles.article_id,
-        articles.topic,
-        articles.created_at,
-        articles.votes,
-        articles.article_img_url,
-        COUNT (comments.comment_id)::INT AS comment_count
+          articles.author,
+          articles.title,
+          articles.article_id,
+          articles.topic,
+          articles.created_at,
+          articles.votes,
+          articles.article_img_url,
+          COUNT(comments.comment_id)::INT AS comment_count
         FROM articles
         LEFT JOIN comments ON articles.article_id = comments.article_id
         GROUP BY articles.article_id
-        ORDER BY articles.created_at DESC
-        `
+        ORDER BY ${sort_by} ${order};
+      `
     )
     .then((result) => {
       return result.rows;

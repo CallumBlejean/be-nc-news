@@ -8,6 +8,29 @@ const endpoints = require("../endpoints.json");
 beforeEach(() => seed(data));
 afterAll(() => db.end());
 
+//sql injection test
+describe("SQL Injection Test", () => {
+  it("returns 400 and will prevent SQL injection through sort_by parameter", () => {
+    return request(app)
+      .get("/api/articles?sort_by=created_at; DROP TABLE articles;")
+      .expect(400) 
+      .then(({body}) => {
+        expect(body.msg).toBe("400: Invalid sort_by Query");
+      });
+  });
+
+  it("returns 400 and will prevent SQL injection through order parameter", () => {
+    return request(app)
+      .get("/api/articles?order=asc; DROP TABLE articles;")
+      .expect(400) 
+      .then(({body}) => {
+        expect(body.msg).toBe("400: Invalid order Query");
+      });
+  });
+});
+//sql injection test
+
+
 describe("GET /api", () => {
   it("returns 200 and the JSON of all available endpoints", () => {
     return request(app)
@@ -77,6 +100,36 @@ describe("GET /api/articles", () => {
         );
         expect(articles).toEqual(dateSortedArticles);
       });
+  });
+  describe("ADDITIONAL TEST - GET /api/articles(sorting queries)", () => {
+    it("sorts articles by votes in ascending order", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes&order=asc")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          const sortedArticles = [...articles].sort((a, b) => a.votes - b.votes);
+          expect(articles).toEqual(sortedArticles)
+        });
+    });
+  
+    it("returns 400 for an invalid sort_by value", () => {
+      return request(app)
+        .get("/api/articles?sort_by=invalidColumn")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("400: Invalid sort_by Query");
+        });
+    });
+  
+    it("returns 400 for an invalid order value", () => {
+      return request(app)
+        .get("/api/articles?order=invalidOrder")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toBe("400: Invalid order Query");
+        });
+    });
   });
 });
 
