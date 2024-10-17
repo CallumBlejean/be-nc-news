@@ -146,7 +146,7 @@ describe("GET /api/articles", () => {
           expect(articles).toEqual(sortedArticles);
         });
     });
-    it("returns 404 for an return of 0 results for that topic", () => {
+    it("returns 404 for an return of 0 results for an invalid topic", () => {
       return request(app)
         .get("/api/articles?sort_by=votes&order=asc&topic=callum")
         .expect(404)
@@ -154,7 +154,16 @@ describe("GET /api/articles", () => {
           expect(body.msg).toBe("404: No Articles Found for Specified Topic");
         });
     });
+    it("returns 404 for an return of 0 results for a valid topic", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes&order=asc&topic=paper")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("404: No Articles Found for Specified Topic");
+        });
+    });
   });
+  
 });
 
 describe("GET /api/articles/:article_id", () => {
