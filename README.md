@@ -37,3 +37,7 @@ This is a RESTful API that provides endpoints for managing articles, comments, t
 7. The mimimum versions required are
  - Node.js: 14.x or higher
  - PostgreSQL: 10.x or higher
+
+ --- 
+
+This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
