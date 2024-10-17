@@ -13,8 +13,8 @@ describe("SQL Injection Test", () => {
   it("returns 400 and will prevent SQL injection through sort_by parameter", () => {
     return request(app)
       .get("/api/articles?sort_by=created_at; DROP TABLE articles;")
-      .expect(400) 
-      .then(({body}) => {
+      .expect(400)
+      .then(({ body }) => {
         expect(body.msg).toBe("400: Invalid sort_by Query");
       });
   });
@@ -22,14 +22,13 @@ describe("SQL Injection Test", () => {
   it("returns 400 and will prevent SQL injection through order parameter", () => {
     return request(app)
       .get("/api/articles?order=asc; DROP TABLE articles;")
-      .expect(400) 
-      .then(({body}) => {
+      .expect(400)
+      .then(({ body }) => {
         expect(body.msg).toBe("400: Invalid order Query");
       });
   });
 });
 //sql injection test
-
 
 describe("GET /api", () => {
   it("returns 200 and the JSON of all available endpoints", () => {
@@ -108,11 +107,13 @@ describe("GET /api/articles", () => {
         .expect(200)
         .then(({ body }) => {
           const { articles } = body;
-          const sortedArticles = [...articles].sort((a, b) => a.votes - b.votes);
-          expect(articles).toEqual(sortedArticles)
+          const sortedArticles = [...articles].sort(
+            (a, b) => a.votes - b.votes
+          );
+          expect(articles).toEqual(sortedArticles);
         });
     });
-  
+
     it("returns 400 for an invalid sort_by value", () => {
       return request(app)
         .get("/api/articles?sort_by=invalidColumn")
@@ -121,7 +122,7 @@ describe("GET /api/articles", () => {
           expect(body.msg).toBe("400: Invalid sort_by Query");
         });
     });
-  
+
     it("returns 400 for an invalid order value", () => {
       return request(app)
         .get("/api/articles?order=invalidOrder")
@@ -132,26 +133,27 @@ describe("GET /api/articles", () => {
     });
     it("returns 200 and sorts articles by votes in ascending order with a valid topic", () => {
       return request(app)
-      .get("/api/articles?sort_by=votes&order=asc&topic=mitch")
-      .expect(200)
-      .then(({ body }) => {
-        const { articles } = body;
-        articles.forEach((article) => {
-          expect(article.topic).toBe("mitch")
-        })
-          const sortedArticles = [...articles].sort((a, b) => a.votes - b.votes);
-          expect(articles).toEqual(sortedArticles)
-          
-      })
-    })
+        .get("/api/articles?sort_by=votes&order=asc&topic=mitch")
+        .expect(200)
+        .then(({ body }) => {
+          const { articles } = body;
+          articles.forEach((article) => {
+            expect(article.topic).toBe("mitch");
+          });
+          const sortedArticles = [...articles].sort(
+            (a, b) => a.votes - b.votes
+          );
+          expect(articles).toEqual(sortedArticles);
+        });
+    });
     it("returns 404 for an return of 0 results for that topic", () => {
       return request(app)
-      .get("/api/articles?sort_by=votes&order=asc&topic=callum")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("404: No Articles Found for Specified Topic")
-      })
-    })
+        .get("/api/articles?sort_by=votes&order=asc&topic=callum")
+        .expect(404)
+        .then(({ body }) => {
+          expect(body.msg).toBe("404: No Articles Found for Specified Topic");
+        });
+    });
   });
 });
 
@@ -172,9 +174,11 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toHaveProperty("votes");
         expect(article).toHaveProperty("article_img_url");
         expect(article.article_id).toEqual(1);
+        //task 13
+        expect(article).toHaveProperty("comment_count");
       });
   });
-  it("returns and object where the values are the correct data type", () => {
+  it("returns 200 and an object where the values are the correct data type", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
@@ -187,6 +191,10 @@ describe("GET /api/articles/:article_id", () => {
             author: expect.any(String),
             created_at: expect.any(String),
             votes: expect.any(Number),
+            topic: expect.any(String),
+            article_img_url: expect.any(String),
+            //task 13
+            comment_count: expect.any(Number)
           })
         );
       });
@@ -436,5 +444,4 @@ describe("GET /api/users", () => {
         });
       });
   });
-  
 });
