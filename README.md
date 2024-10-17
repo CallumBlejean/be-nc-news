@@ -10,12 +10,14 @@ This is a RESTful API that provides endpoints for managing articles, comments, t
 2. cd into the repo
 
 3. Install the required dependencies.
- - npm i
-
+  ```
+  npm i
+  ```
 4. Seed the local database
- - npm run setup-dbs
- - npm run seed
-
+  ```
+  npm run setup-dbs
+  npm run seed
+  ```
 5. In the root of the project, create two .env files: .env.test and .env.development.
 - Add the following to each file:
 
@@ -29,8 +31,9 @@ This is a RESTful API that provides endpoints for managing articles, comments, t
      PGDATABASE=<your_development_database_name>
      ```
 6. To run the tests use
- - npm test
-
+   ```
+   npm test
+   ```
 7. The mimimum versions required are
  - Node.js: 14.x or higher
  - PostgreSQL: 10.x or higher
