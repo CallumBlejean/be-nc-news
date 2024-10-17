@@ -17,13 +17,17 @@ This is a RESTful API that provides endpoints for managing articles, comments, t
  - npm run seed
 
 5. In the root of the project, create two .env files: .env.test and .env.development.
- - Add the following to each file:
- .env.test:
- PGDATABASE=<your_test_database_name>
+- Add the following to each file:
 
- .env.development:
- PGDATABASE=<your_development_database_name>
+   - **.env.test**:
+     ```
+     PGDATABASE=<your_test_database_name>
+     ```
 
+   - **.env.development**:
+     ```
+     PGDATABASE=<your_development_database_name>
+     ```
 6. To run the tests use
  - npm test
 
