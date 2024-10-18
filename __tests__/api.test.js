@@ -454,3 +454,25 @@ describe("GET /api/users", () => {
       });
   });
 });
+describe("GET /api/users/:username", () => {
+  it("returns 200 and with an article object with the correct properties and value types.", () => {
+    return request(app)
+      .get("/api/users/butter_bridge")
+      .expect(200)
+      .then(({ body }) => {
+        const { user } = body;
+        expect(user).toBeInstanceOf(Object);
+        expect(user).toHaveProperty("username", expect.any(String));
+        expect(user).toHaveProperty("name", expect.any(String));
+        expect(user).toHaveProperty("avatar_url", expect.any(String));
+      });
+  })
+  it("returns 404 when the user is not found", () => {
+    return request(app)
+    .get("/api/users/callumNC")
+    .expect(404)
+    .then(({ body }) => {
+      expect(body.msg).toBe("404: User not found")
+    })
+  })
+})
