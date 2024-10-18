@@ -16,7 +16,7 @@ exports.fetchUser = (userName) => {
         `, [userName])
         .then((result) => {
             if (result.rows.length === 0) {
-                return Promise.reject({ status: 404, msg: "404: User not found" });
+                return Promise.reject({ status: 404, msg: "404: User Not Found" });
               }
             return result.rows[0]
         })

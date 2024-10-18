@@ -134,5 +134,21 @@
         "avatar_url": "http://website.com/image.jpg"
       }
     }
+  },
+  "PATCH /api/comments/:comment_id": {
+  "description": "updates the votes of a comment by comment_id and returns that comment",
+  "requestBody": {
+    "inc_votes": 1
+  },
+  "exampleResponse": {
+    "comment": {
+      "comment_id": 1,
+      "article_id": 1,
+      "author": "butter_bridge",
+      "body": "This is a test comment.",
+      "votes": 101,
+      "created_at": "2018-05-30T15:59:13.341Z"
+    }
   }
+}
 }

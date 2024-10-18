@@ -472,7 +472,80 @@ describe("GET /api/users/:username", () => {
     .get("/api/users/callumNC")
     .expect(404)
     .then(({ body }) => {
-      expect(body.msg).toBe("404: User not found")
+      expect(body.msg).toBe("404: User Not Found")
     })
   })
+})
+describe("PATCH /api/comments/:comments_id", () => {
+  it("returns 200 and updates the comments's votes, incrementing by the provided value", () => {
+    const updateVotes = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/comments/1")
+      .send(updateVotes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 1,
+            votes: expect.any(Number),
+          })
+        );
+        expect(body.comment.votes).toBe(26);
+      });
+  });
+  it("returns 200 and updates the comment's votes, decrementing by the provided value", () => {
+    const updateVotes = { inc_votes: -2 };
+    return request(app)
+      .patch("/api/comments/1")
+      .send(updateVotes)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comment).toEqual(
+          expect.objectContaining({
+            comment_id: 1,
+            votes: expect.any(Number),
+          })
+        );
+        expect(body.comment.votes).toBe(14);
+      });
+  });
+  it("returns 400 when inc_votes is not a number", () => {
+    const updateVotes = { inc_votes: "not-a-number" };
+    return request(app)
+      .patch("/api/comments/1")
+      .send(updateVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("returns 400 when comment_id is not a valid number", () => {
+    const updateVotes = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/comments/not-a-number")
+      .send(updateVotes)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("returns 400 when the request body is empty", () => {
+    return request(app)
+      .patch("/api/comments/1")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("returns 404 when the comment does not exist", () => {
+    const updateVotes = { inc_votes: 1 };
+    return request(app)
+      .patch("/api/comments/99999")
+      .send(updateVotes)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Comment Not Found");
+      });
+  });
 })
