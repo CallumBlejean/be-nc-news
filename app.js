@@ -1,28 +1,18 @@
 const express = require("express");
 const app = express();
-const { getAllTopics } = require("./controllers/topics.controller");
+const articlesRouter = require("./routes/articles.router");
+const topicsRouter = require("./routes/topics.router");
+const commentsRouter = require("./routes/comments.router");
+const usersRouter = require("./routes/users.router");
 const { getEndPoints } = require("./controllers/endPoints.controller");
-const {
-  getArticle,
-  getAllArticles,
-  getArticleComments,
-  postArticleComment,
-  patchArticleVotes
-} = require("./controllers/articles.controller");
-const { deleteComment } = require("./controllers/comments.controller")
-const { getAllUsers } = require("./controllers/users.controller")
 
 app.use(express.json());
 
 app.get("/api", getEndPoints);
-app.get("/api/topics", getAllTopics);
-app.get("/api/articles", getAllArticles);
-app.get("/api/articles/:article_id", getArticle);
-app.get("/api/articles/:article_id/comments", getArticleComments);
-app.post("/api/articles/:article_id/comments", postArticleComment);
-app.patch("/api/articles/:article_id", patchArticleVotes);
-app.delete("/api/comments/:comment_id", deleteComment)
-app.get("/api/users", getAllUsers)
+app.use("/api/topics", topicsRouter);
+app.use("/api/articles", articlesRouter);
+app.use("/api/comments", commentsRouter);
+app.use("/api/users", usersRouter);
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
