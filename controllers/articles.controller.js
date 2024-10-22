@@ -4,7 +4,21 @@ const {
   fetchArticleComments,
   insertComment,
   updateArticleVotes,
+  insertArticle,
 } = require("../models/articles.model");
+
+exports.postArticle = (request, response, next) => {
+  const { author, title, body, topic, article_img_url } = request.body;
+
+  insertArticle(author, title, body, topic, article_img_url)
+    .then((newArticle) => {
+      response.status(201).send({ newArticle });
+    })
+    .catch(next);
+};
+
+
+
 
 exports.patchArticleVotes = (request, response, next) => {
   const { article_id } = request.params;

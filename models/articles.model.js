@@ -1,5 +1,43 @@
 const db = require("../db/connection");
 
+exports.insertArticle = (
+  author,
+  title,
+  body,
+  topic,
+  article_img_url = "http://website.com/image.jpg"
+) => {
+  if (!author || !title || !body || !topic) {
+    return Promise.reject({
+      status: 400,
+      msg: "400: Bad Request - Missing required fields",
+    });
+  }
+
+  return db
+    .query(
+      `INSERT INTO articles (author, title, body, topic, article_img_url, votes, created_at)
+       VALUES ($1, $2, $3, $4, $5, 0, NOW())
+       RETURNING *;`,
+      [author, title, body, topic, article_img_url]
+    )
+    .then((result) => {
+      const article = result.rows[0];
+      return db
+        .query(
+          `SELECT * 
+           FROM comments 
+           WHERE article_id = $1
+           `,
+          [article.article_id]
+        )
+        .then(({ rows }) => {
+          article.comment_count = rows.length;
+          return article;
+        });
+    });
+};
+
 exports.updateArticleVotes = (article_id, inc_votes) => {
   return db
     .query(
@@ -40,7 +78,7 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "desc", topic) => {
     "author",
     "created_at",
     "votes",
-    "comment_count"
+    "comment_count",
   ];
   const validOrder = ["asc", "desc"];
   const queryTopic = [];

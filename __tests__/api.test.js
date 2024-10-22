@@ -42,7 +42,7 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/topics", () => {
-  test("returns 200 and an array of topic objects, each with 'slug' and 'description' properties", () => {
+  it("returns 200 and an array of topic objects, each with 'slug' and 'description' properties", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
@@ -163,7 +163,6 @@ describe("GET /api/articles", () => {
         });
     });
   });
-  
 });
 
 describe("GET /api/articles/:article_id", () => {
@@ -203,7 +202,7 @@ describe("GET /api/articles/:article_id", () => {
             topic: expect.any(String),
             article_img_url: expect.any(String),
             //task 13
-            comment_count: expect.any(Number)
+            comment_count: expect.any(Number),
           })
         );
       });
@@ -466,16 +465,16 @@ describe("GET /api/users/:username", () => {
         expect(user).toHaveProperty("name", expect.any(String));
         expect(user).toHaveProperty("avatar_url", expect.any(String));
       });
-  })
+  });
   it("returns 404 when the user is not found", () => {
     return request(app)
-    .get("/api/users/callumNC")
-    .expect(404)
-    .then(({ body }) => {
-      expect(body.msg).toBe("404: User Not Found")
-    })
-  })
-})
+      .get("/api/users/callumNC")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: User Not Found");
+      });
+  });
+});
 describe("PATCH /api/comments/:comments_id", () => {
   it("returns 200 and updates the comments's votes, incrementing by the provided value", () => {
     const updateVotes = { inc_votes: 10 };
@@ -548,4 +547,50 @@ describe("PATCH /api/comments/:comments_id", () => {
         expect(body.msg).toBe("404: Comment Not Found");
       });
   });
-})
+});
+describe("POST /api/articles", () => {
+  it("returns 201 and the successfully posted article", () => {
+    const newArticle = {
+      author: "icellusedkars",
+      title: "A brand new article",
+      body: "This is the content of the new article.",
+      topic: "mitch",
+      article_img_url: "http://example.com/new-image.jpg",
+    };
+
+    return request(app)
+      .post("/api/articles")
+      .send(newArticle)
+      .expect(201)
+      .then(({ body: { newArticle: article } }) => {
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: expect.any(Number),
+            title: newArticle.title,
+            body: newArticle.body,
+            topic: newArticle.topic,
+            author: newArticle.author,
+            article_img_url: newArticle.article_img_url,
+            votes: 0,
+            created_at: expect.any(String),
+            comment_count: 0,
+          })
+        );
+      });
+  });
+  it("returns 400 when body is missing a required field)", () => {
+    const article = {
+      author: "butter_bridge",
+      body: "This article has no title.",
+      topic: "coding",
+    };
+
+    return request(app)
+      .post("/api/articles")
+      .send(article)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request - Missing required fields");
+      });
+  });
+});

@@ -26,6 +26,7 @@ app.use((error, request, response, next) => {
   } else if (error.code === "23503") {
     response.status(404).send({ msg: "404: Article or User Not Found" });
   } else {
+    console.log(error, "<<500 error")
     response.status(500).send({ msg: "Internal Server Error" });
   }
 });
